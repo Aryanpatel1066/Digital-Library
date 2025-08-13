@@ -1,14 +1,18 @@
- // src/pages/Login.jsx
-import React, { useState, useContext } from "react";
-import api from "../api/api";
+ import React, { useState, useContext, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const { login } = useContext(AuthContext);
+  const { loginWithGoogle, loginWithBackend, loading, user } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/profile");
+    }
+  }, [user, navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,19 +20,17 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const { data } = await api.post("auth/login", formData);
-      login(data.user);
-      toast.success(data.message || "Login successful!");
-      navigate("/profile");
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Login failed");
+    const success = await loginWithBackend(formData.email, formData.password);
+    if (success) {
+      toast.success("Login successful!");
     }
   };
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 border rounded shadow">
       <h2 className="text-2xl font-bold mb-4">Login</h2>
+
+      {/* Email/Password Login */}
       <form onSubmit={handleSubmit}>
         <input
           type="email"
@@ -52,6 +54,15 @@ const Login = () => {
           Login
         </button>
       </form>
+
+      {/* Google Login */}
+      <button
+        onClick={loginWithGoogle}
+        disabled={loading}
+        className="w-full bg-red-500 text-white py-2 rounded mt-3"
+      >
+        {loading ? "Signing in..." : "Continue with Google"}
+      </button>
     </div>
   );
 };
