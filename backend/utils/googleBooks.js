@@ -13,8 +13,7 @@ const fetchBooks = async (type, query) => {
 
   return (data.items || []).map(item => {
     const v = item.volumeInfo;
-    // ✅ Safely extract ISBN_13 if available
-    const isbn = v.industryIdentifiers?.find(i => i.type === "ISBN_13")?.identifier || null;
+     const isbn = v.industryIdentifiers?.find(i => i.type === "ISBN_13")?.identifier || null;
 
     return {
       title: v.title,
