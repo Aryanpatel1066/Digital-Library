@@ -1,7 +1,7 @@
  const express = require('express');
  const mongoose = require('mongoose')
  const  cors = require("cors");
-
+const bookRoutes = require('./routes/book.route')
  const app = express();
  app.use(cors({
   origin: "http://localhost:5173", // allow only your frontend
@@ -31,3 +31,4 @@ const connectDbAndStartServer = async () => {
 connectDbAndStartServer();
 
 app.use("/library/api/v1/auth",require('./routes/auth.route'))
+app.use("/library/api/v1/books", bookRoutes);
