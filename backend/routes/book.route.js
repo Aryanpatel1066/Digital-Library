@@ -5,7 +5,8 @@ const bookController = require("../controllers/book.controller");
 // Route: GET /api/books?type=isbn&query=9781787123427
 router.get("/", bookController.getBooks);
 //router for new arrivals
-router.get('/new',bookController.getNewArrivals);
+router.get('/new', bookController.getNewArrivals);
 //router for trending book
-router.get('/trending',bookController.getTrending);
+router.get('/trending', bookController.getTrending);
+router.get('/:id',bookController.getBookById)
 module.exports = router;

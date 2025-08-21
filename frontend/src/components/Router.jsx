@@ -5,6 +5,7 @@ import Profile from "../pages/Profile";
 import Home from "../pages/Home";
 import Search from "../pages/Search";
 import SearchBar from "../components/SearchBar";
+import BookDetails from "../pages/BookDetails";
 function Router(){
     return(
         <>
@@ -14,6 +15,8 @@ function Router(){
       <Route path="/register" element={<Register/>}/>
       <Route path="/profile" element={<Profile/>}/>
         <Route path="/search" element={<Search />} />
+                <Route path="/books/:id" element={<BookDetails />} />
+
         </Routes>
         
         </>

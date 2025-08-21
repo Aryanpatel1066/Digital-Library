@@ -1,7 +1,7 @@
 const fetchBooks = require("../utils/googleBooks");
 const Book = require("../models/book.model");
 //based on seach book controller
- exports.getBooks = async (req, res) => {
+exports.getBooks = async (req, res) => {
   const { type, query } = req.query;
   if (!type || !query) {
     return res.status(400).json({ error: "Missing type or query" });
@@ -68,3 +68,21 @@ exports.getTrending = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+//fetch particular book by id
+exports.getBookById = async (req, res) => {
+  try {
+    const book = await Book.findById(req.params.id);
+    if (!book) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    res.json(book);
+  }
+  catch (err) {
+    console.log(err);
+    res.status(500).send({
+      message: "error while fetching particulr book"
+    })
+  }
+}
